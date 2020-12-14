@@ -8,6 +8,7 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
+const errorController = require('./controllers/error');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
@@ -16,9 +17,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
+app.use(errorController.get404); //page not found
 
-app.use((req, res, next) => {
-  res.status(404).json( { message: 'Page Not Found' });
+//
+const PORT = process.env.PORT || 3030;
+
+app.listen(PORT, () => {
+  console.log(`server running on PORT: ${PORT}`);
 });
-
-app.listen(3000);
